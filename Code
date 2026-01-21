@@ -52,3 +52,15 @@ int main(void) {
         }
     }
 }
+void Display_Value(int val) {
+    // Both sides Active High (1 = Segment ON)
+    const uint8_t map[] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F};
+    uint16_t tens = map[(val / 10) % 10];
+    uint16_t ones = map[val % 10];
+    GPIOC->ODR = (tens << 8) | ones; // PC8-15 Tens, PC0-7 Ones
+}
+
+void Delay_ms(int ms) {
+    // Calibrated for 16MHz clock
+    for (volatile int i = 0; i < (ms * 1100); i++); 
+}
